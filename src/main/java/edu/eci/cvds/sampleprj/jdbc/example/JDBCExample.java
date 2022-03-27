@@ -32,66 +32,60 @@ import java.util.logging.Logger;
  */
 public class JDBCExample {
 
-    public static void main(String args[]){
+    public static void main(String args[]) {
         try {
-            String url="jdbc:mysql://desarrollo.is.escuelaing.edu.co:3306/bdprueba";
-            String driver="com.mysql.jdbc.Driver";
-            String user="bdprueba";
-            String pwd="prueba2019";
-                        
+            String url = "jdbc:mysql://desarrollo.is.escuelaing.edu.co:3306/bdprueba";
+            String driver = "com.mysql.jdbc.Driver";
+            String user = "bdprueba";
+            String pwd = "prueba2019";
+
             Class.forName(driver);
-            Connection con=DriverManager.getConnection(url,user,pwd);
+            Connection con = DriverManager.getConnection(url, user, pwd);
             con.setAutoCommit(false);
-                 
-            
-            System.out.println("Valor total pedido 1:"+valorTotalPedido(con, 1));
-            
-            List<String> prodsPedido=nombresProductosPedido(con, 1);
-            
-            
+
+            System.out.println("Valor total pedido 1:" + valorTotalPedido(con, 1));
+
+            List<String> prodsPedido = nombresProductosPedido(con, 1);
+
             System.out.println("Productos del pedido 1:");
             System.out.println("-----------------------");
-            for (String nomprod:prodsPedido){
+            for (String nomprod : prodsPedido) {
                 System.out.println(nomprod);
             }
             System.out.println("-----------------------");
-            
-            
-            int suCodigoECI=2166131;
+
+            int suCodigoECI = 2166131;
             registrarNuevoProducto(con, suCodigoECI, "Iphone 13 pro maxxxxxxxxxxxxx ", 351465465);
             con.commit();
-                        
-            
+
             con.close();
-                                   
+
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(JDBCExample.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
     }
-    
+
     /**
      * Agregar un nuevo producto con los parámetros dados
+     *
      * @param con la conexión JDBC
      * @param codigo
      * @param nombre
      * @param precio
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public static void registrarNuevoProducto(Connection con, int codigo, String nombre,int precio) throws SQLException{
-        String poblarProductos =
-                "INSERT INTO ORD_PRODUCTOS (codigo, nombre, precio) " +
-                        "VALUES (?,?,?);";
+    public static void registrarNuevoProducto(Connection con, int codigo, String nombre, int precio) throws SQLException {
+        String poblarProductos = "INSERT INTO ORD_PRODUCTOS VALUES (?,?,?);";
         //Crear preparedStatement
-        try (PreparedStatement registrarProducto = con.prepareStatement(poblarProductos)){
+        try (PreparedStatement registrarProducto = con.prepareStatement(poblarProductos)) {
             //asignar parámetros
             registrarProducto.setInt(1, codigo);
             registrarProducto.setString(2, nombre);
             registrarProducto.setInt(3, precio);
             //usar executeQuery
             registrarProducto.execute();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             if (con != null) {
                 try {
                     System.err.print(e.getMessage());
@@ -101,34 +95,31 @@ public class JDBCExample {
             }
         }
         con.commit();
-        
+
     }
-    
+
     /**
      * Consultar los nombres de los productos asociados a un pedido
+     *
      * @param con la conexión JDBC
      * @param codigoPedido el código del pedido
-     * @return 
+     * @return
      */
-    public static List<String> nombresProductosPedido(Connection con, int codigoPedido){
-        List<String> np=new LinkedList<>();
-        String selectNombreProductos =
-                "SELECT ORD_PRODUCTOS.nombre " +
-                        "FROM ORD_PRODUCTOS " +
-                        "INNER JOIN ORD_DETALLE_PEDIDO ON ORD_PRODUCTOS.codigo = ORD_DETALLE_PEDIDO.producto_fk " +
-                        "WHERE ORD_DETALLE_PEDIDO.pedido_fk = ? ";
+    public static List<String> nombresProductosPedido(Connection con, int codigoPedido) {
+        List<String> np = new LinkedList<>();
+        String selectNombreProductos = "SELECT nombre FROM ORD_PRODUCTOS op ,ORD_DETALLE_PEDIDO odp WHERE op.codigo = odp.producto_fk AND odp.pedido_fk = ?";
         //Crear prepared statement
-        try (PreparedStatement nombrespedidos = con.prepareStatement(selectNombreProductos)){
+        try (PreparedStatement nombrespedidos = con.prepareStatement(selectNombreProductos)) {
             //asignar parámetros
             nombrespedidos.setInt(1, codigoPedido);
             //usar executeQuery
             ResultSet respuesta = nombrespedidos.executeQuery();
             //Sacar resultados del ResultSet
-            while (respuesta.next()){
+            while (respuesta.next()) {
                 //Llenar la lista y retornarla
                 np.add(respuesta.getString("nombre"));
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             if (con != null) {
                 try {
                     System.err.print("Transaction is being rolled back");
@@ -140,22 +131,17 @@ public class JDBCExample {
         return np;
     }
 
-    
     /**
      * Calcular el costo total de un pedido
+     *
      * @param con
      * @param codigoPedido código del pedido cuyo total se calculará
      * @return el costo total del pedido (suma de: cantidades*precios)
      */
-    public static int valorTotalPedido(Connection con, int codigoPedido){
+    public static int valorTotalPedido(Connection con, int codigoPedido) {
         int resultado = 0;
-        String selectCostoPedido =
-                "SELECT SUM(p.precio * odp.cantidad) AS suma_pedido " +
-                        "FROM ORD_PRODUCTOS p " +
-                        "INNER JOIN ORD_DETALLE_PEDIDO odp " +
-                        "ON p.codigo = odp.producto_fk " +
-                        "WHERE odp.pedido_fk = ? ";
-        try{
+        String selectCostoPedido = "SELECT SUM(precio) ValorTotal FROM ORD_PRODUCTOS op ,ORD_DETALLE_PEDIDO odp WHERE op.codigo = odp.producto_fk AND odp.pedido_fk = ?";
+        try {
 
             PreparedStatement total = con.prepareStatement(selectCostoPedido);
             //asignar parámetros
@@ -163,11 +149,11 @@ public class JDBCExample {
             //usar executeQuery
             ResultSet respuesta = total.executeQuery();
             //Sacar resultados del ResultSet
-            while (respuesta.next()){
+            while (respuesta.next()) {
                 //Llenar la lista y retornarla
                 resultado = respuesta.getInt("suma_pedido");
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             if (con != null) {
                 try {
                     System.err.print("Transaction is being rolled back");
@@ -178,9 +164,5 @@ public class JDBCExample {
         }
         return resultado;
     }
-    
 
-    
-    
-    
 }
