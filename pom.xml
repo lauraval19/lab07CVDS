@@ -38,7 +38,7 @@
             <version>1.4.191</version>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
             <!-- clean project (also local H2 database)-->
@@ -55,7 +55,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <!-- create local H2 database -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -64,12 +64,12 @@
                 <dependencies>
                     <dependency>
                         <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId> 
+                        <artifactId>h2</artifactId>
                         <version>1.4.184</version>
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <driver>org.h2.Driver</driver>                    
+                    <driver>org.h2.Driver</driver>
                     <url>jdbc:h2:file:./target/db/testdb;MODE=MYSQL</url>
                     <username>sa</username>
                     <password></password>
@@ -84,8 +84,8 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <srcFiles>                                
-                                <srcFile>tables.sql</srcFile>                                
+                            <srcFiles>
+                                <srcFile>tables.sql</srcFile>
                             </srcFiles>
                         </configuration>
                     </execution>
@@ -93,9 +93,9 @@
             </plugin>
         </plugins>
     </build>
-        
-    
-    
+
+
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
