@@ -18,11 +18,14 @@ package edu.eci.cvds.samples.services.client;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Date;
 import java.sql.SQLException;
 
 import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ClienteMapper;
 import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ItemMapper;
+import edu.eci.cvds.samples.entities.Item;
+import edu.eci.cvds.samples.entities.TipoItem;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -60,19 +63,27 @@ public class MyBatisExample {
      * @param args
      * @throws SQLException
      */
-    public static void main(String args[]) throws SQLException {
+    public static void main(String args[]) throws SQLException, ParseException {
         SqlSessionFactory sessionfact = getSqlSessionFactory();
-
         SqlSession sqlss = sessionfact.openSession();
-
-        //Crear el mapper y usarlo: 
-//        ClienteMapper cm=sqlss.getMapper(ClienteMapper.class)
-        //cm...
         ClienteMapper cm = sqlss.getMapper(ClienteMapper.class);
+        /*Consultar los clientes*/
+        System.out.println("Consulta Clientes :");
         System.out.println(cm.consultarClientes());
+        /*Consultar un cliente*/
+        System.out.println("Consulta Cliente 1 :");
+        System.out.println(cm.consultarCliente(1));
+
+        /*Insertar Item*/
+        ItemMapper im = sqlss.getMapper(ItemMapper.class);
+//        TipoItem tipoItem = new TipoItem(2, "Prueba Alvarado_Castro");
+//        Item item = new Item(tipoItem,1010,"Tipo de item CVDS", "Prueba Alvarado_Castro", new SimpleDateFormat("YYYY/MM/DD").parse("2020/09/28"), 70, "Renta-2", "accion");
+//        im.insertarItem(item);
+//        System.out.println("Item Insertado satisfactoriamente");
+        /*Consultar los items*/
+        System.out.println("Consulta Item :");
+        System.out.println(im.consultarItem(4));
         sqlss.commit();
         sqlss.close();
-
     }
-
 }
