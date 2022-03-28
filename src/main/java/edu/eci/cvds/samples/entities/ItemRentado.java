@@ -7,10 +7,9 @@ package edu.eci.cvds.samples.entities;
 
 import java.io.Serializable;
 import java.sql.Date;
-
 /**
  *
- * @author 2106913
+ * @author Jaime Castro - Laura Alvarado
  */
 public class ItemRentado implements Serializable {
 
@@ -67,6 +66,4 @@ public class ItemRentado implements Serializable {
         return "ItemRentado{" + "id=" + id + ", item=" + item + ", fechainiciorenta=" + fechainiciorenta + ", fechafinrenta=" + fechafinrenta + '}';
     }
 
-    
-    
 }

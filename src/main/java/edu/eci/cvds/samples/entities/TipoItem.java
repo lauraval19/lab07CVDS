@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author 2106913
+ * @author Jaime Castro - Laura Alvarado
  */
 public class TipoItem implements Serializable {
 

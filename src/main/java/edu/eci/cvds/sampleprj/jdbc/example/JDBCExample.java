@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author hcadavid
+ * @author Jaime Castro - Laura Alvarado
  */
 public class JDBCExample {
 
@@ -84,17 +84,17 @@ public class JDBCExample {
             registrarProducto.setString(2, nombre);
             registrarProducto.setInt(3, precio);
             //usar executeQuery
-            registrarProducto.execute();
+            registrarProducto.executeUpdate();
         } catch (SQLException e) {
-            if (con != null) {
-                try {
-                    System.err.print(e.getMessage());
-                    con.rollback();
-                } catch (SQLException excep) {
-                }
-            }
+            //if (con != null) {
+            //    try {
+            //        System.err.print(e.getMessage());
+            //        con.rollback();
+            //    } catch (SQLException excep) {
+            //    }
+            //}
         }
-        con.commit();
+        //con.commit();
 
     }
 
@@ -120,13 +120,13 @@ public class JDBCExample {
                 np.add(respuesta.getString("nombre"));
             }
         } catch (SQLException e) {
-            if (con != null) {
-                try {
-                    System.err.print("Transaction is being rolled back");
-                    con.rollback();
-                } catch (SQLException excep) {
-                }
-            }
+            //if (con != null) {
+            //    try {
+            //        System.err.print(e.getMessage());
+            //        con.rollback();
+            //    } catch (SQLException excep) {
+            //    }
+            //}
         }
         return np;
     }
@@ -151,16 +151,16 @@ public class JDBCExample {
             //Sacar resultados del ResultSet
             while (respuesta.next()) {
                 //Llenar la lista y retornarla
-                resultado = respuesta.getInt("suma_pedido");
+                resultado = respuesta.getInt(1);
             }
         } catch (SQLException e) {
-            if (con != null) {
-                try {
-                    System.err.print("Transaction is being rolled back");
-                    con.rollback();
-                } catch (SQLException excep) {
-                }
-            }
+            //if (con != null) {
+            //    try {
+            //        System.err.print(e.getMessage());
+            //        con.rollback();
+            //    } catch (SQLException excep) {
+            //    }
+            //}
         }
         return resultado;
     }

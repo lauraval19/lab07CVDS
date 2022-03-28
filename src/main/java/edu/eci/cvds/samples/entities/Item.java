@@ -10,9 +10,10 @@ import java.util.Date;
 
 /**
  *
- * @author 2106913
+ * @author Jaime Castro - Laura Alvarado
  */
-public class Item implements Serializable{
+public class Item implements Serializable {
+
     private TipoItem tipo;
     private int id;
     private String nombre;
@@ -36,9 +37,6 @@ public class Item implements Serializable{
     public Item() {
     }
 
-    
-    
-    
     public TipoItem getTipo() {
         return tipo;
     }
@@ -54,8 +52,6 @@ public class Item implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
-
-
 
     public String getNombre() {
         return nombre;
@@ -110,9 +106,4 @@ public class Item implements Serializable{
         return "Item{" + "tipo=" + tipo + ", id=" + id + ", nombre=" + nombre + ", tarifaxDia=" + tarifaxDia + '}';
     }
 
-
-    
-    
-    
-    
 }

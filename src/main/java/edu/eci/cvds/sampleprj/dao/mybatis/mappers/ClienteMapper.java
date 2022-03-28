@@ -8,7 +8,7 @@ import edu.eci.cvds.samples.entities.Cliente;
 
 /**
  *
- * @author Jaime Castro - LAura Alvarado
+ * @author Jaime Castro - Laura Alvarado
  */
 public interface ClienteMapper {
 
@@ -34,3 +34,4 @@ public interface ClienteMapper {
     public List<Cliente> consultarClientes();
 
 }
+
